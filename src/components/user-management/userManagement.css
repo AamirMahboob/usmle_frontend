@@ -1,0 +1,56 @@
+.user-management-container {
+  padding: 24px;
+}
+
+.user-table {
+  margin-top: 20px;
+}
+
+.role-tag {
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.role-tag.admin {
+  background-color: #f6ffed;
+  border: 1px solid #b7eb8f;
+  color: #389e0d;
+}
+
+.role-tag.editor {
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  color: #096dd9;
+}
+
+.role-tag.viewer {
+  background-color: #fff2e8;
+  border: 1px solid #ffbb96;
+  color: #d46b08;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.form-item {
+  flex: 1;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.add-user-btn {
+  margin-bottom: 16px;
+}
+
+.edit-btn {
+  background-color: #faad14;
+  border-color: #faad14;
+}
