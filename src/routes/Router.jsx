@@ -7,6 +7,9 @@ import AddQuestion from "../pages/AddQuestion";
 import AddSubject from "../pages/AddSubject";
 import CreateQuiz from "../pages/CreateQuiz";
 import TakeQuiz from "../pages/TakeQuiz";
+import AddSystem from "../pages/AddSystem";
+import AdvanceQuiz from "../pages/AdvanceQuiz";
+import SingleQuizPage from "../pages/SingleQuizPage";
 
 export const router = createBrowserRouter([
   {
@@ -37,11 +40,23 @@ export const router = createBrowserRouter([
         path: "create-quiz",
         element: <CreateQuiz />,
       },
+      {
+        path: "add-system",
+        element: <AddSystem />,
+      },
 
       {
         path: "quiz/:quizId", // ✅ now correct
         element: <TakeQuiz />,
       },
+      {
+        path: "advance-quiz",
+        element: <AdvanceQuiz />,
+      },
+      // {
+      //   path: "single-quiz/:quizId",
+      //   element: <SingleQuizPage />,
+      // },
     ],
   },
 ]);

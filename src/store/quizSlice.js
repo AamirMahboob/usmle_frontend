@@ -46,6 +46,16 @@ export const quizApi = createApi({
       }),
       invalidatesTags: ["Quiz"],
     }),
+    answerSubmit: builder.mutation({
+      query: ({ questionId, selectedAnswerId, quizId }) => ({
+        url: `quiz/${quizId}/answer`,
+        method: "POST",
+        body: {
+          selectedAnswerId,
+          questionId,
+        },
+      }),
+    }),
   }),
 });
 
@@ -55,4 +65,5 @@ export const {
   useCreateQuizMutation,
   useGetQuizByIdQuery,
   useSubmitQuizMutation,
+  useAnswerSubmitMutation,
 } = quizApi;

@@ -23,7 +23,7 @@ const AddSubjectModal = ({ openModal, setOpenModal, currentSubject }) => {
 
       const response = await addSubjectApi(subjectFormData);
 
-      if (response.data.success === true) {
+      if (response?.data?.success === true) {
         setOpenModal(false);
         toast.success("Subject Added Successfully");
       }

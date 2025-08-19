@@ -100,18 +100,18 @@ const CreateQuiz = () => {
       <Card
         title="Create Quiz"
         variant="outlined"
-        extra={
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setModalOpen(true);
-              // setCurrentSubject(null);
-            }}
-          >
-            Create Quiz
-          </Button>
-        }
+        // extra={
+        //   <Button
+        //     type="primary"
+        //     icon={<PlusOutlined />}
+        //     onClick={() => {
+        //       setModalOpen(true);
+        //       // setCurrentSubject(null);
+        //     }}
+        //   >
+        //     Create Quiz
+        //   </Button>
+        // }
       >
         <Spin size="large" spinning={false}>
           <Table columns={columns} dataSource={modifyQuizArray} rowKey="id" />

@@ -56,6 +56,21 @@ export const subjectApi = createApi({
       }),
       invalidatesTags: ["Subject"],
     }),
+    fetchSystemBySubjectArray: builder.mutation({
+      query: (data) => ({
+        url: "countQuestions/by-subjects-system",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    createQuiz: builder.mutation({
+      query: (data) => ({
+        url: "quiz/create",
+        method: "POST",
+        body: data,
+      }),
+    }),
     // You can add more endpoints here
   }),
 });
@@ -67,5 +82,7 @@ export const {
 
   useDeleteSubjectMutation,
   useAddSubjectBySubjectMutation,
+  useFetchSystemBySubjectArrayMutation,
+  useCreateQuizMutation,
   // export other hooks as needed
 } = subjectApi;
