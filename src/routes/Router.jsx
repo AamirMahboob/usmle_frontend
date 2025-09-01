@@ -10,6 +10,9 @@ import TakeQuiz from "../pages/TakeQuiz";
 import AddSystem from "../pages/AddSystem";
 import AdvanceQuiz from "../pages/AdvanceQuiz";
 import SingleQuizPage from "../pages/SingleQuizPage";
+import CreateQuetions from "../pages/CreateQuestions";
+import CreateQuestions from "../pages/CreateQuestions";
+import AddSubSystem from "../pages/AddSubSystem";
 
 export const router = createBrowserRouter([
   {
@@ -33,6 +36,10 @@ export const router = createBrowserRouter([
         element: <AddSubject />,
       },
       {
+        path: "add-sub-system",
+        element: <AddSubSystem />,
+      },
+      {
         path: "add-question",
         element: <AddQuestion />,
       },
@@ -52,6 +59,14 @@ export const router = createBrowserRouter([
       {
         path: "advance-quiz",
         element: <AdvanceQuiz />,
+      },
+      {
+        path: "create-question",
+        element: <CreateQuestions />,
+      },
+      {
+        path: "edit-question/:id",
+        element: <CreateQuestions />,
       },
       // {
       //   path: "single-quiz/:quizId",

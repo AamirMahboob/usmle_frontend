@@ -32,6 +32,7 @@ export const systemApi = createApi({
         url: "system",
         method: "GET",
       }),
+      providesTags: ["System"],
     }),
     editSystem: builder.mutation({
       query: (systemData) => ({
@@ -48,6 +49,15 @@ export const systemApi = createApi({
         url: `system/${systemId}`,
         method: "DELETE",
       }),
+      invalidatesTags: ["System"],
+    }),
+
+    getSystemBySubjectId: builder.mutation({
+      query: (systemId) => ({
+        url: `system/by-subject/${systemId}`,
+        method: "GET",
+      }),
+      invalidatesTags: ["System"],
     }),
   }),
 });
@@ -57,4 +67,5 @@ export const {
   useGetSystemQuery,
   useEditSystemMutation,
   useDeleteSystemMutation,
+  useGetSystemBySubjectIdMutation,
 } = systemApi;

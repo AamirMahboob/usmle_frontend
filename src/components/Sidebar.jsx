@@ -29,17 +29,24 @@ const Sidebar = ({ isMobile = false, onClose }) => {
       roles: ["admin", "user"],
     },
     {
+      href: "/dashboard/add-system",
+      icon: <QuestionCircleOutlined className="text-xl" />,
+      label: "Systems",
+      roles: ["admin", "user"],
+    },
+    {
+      href: "/dashboard/add-sub-system",
+      icon: <QuestionCircleOutlined className="text-xl" />,
+      label: "Sub Systems",
+      roles: ["admin", "user"],
+    },
+    {
       href: "/dashboard/add-question",
       icon: <QuestionCircleOutlined className="text-xl" />,
       label: "Questions",
       roles: ["admin", "user"],
     },
-    {
-      href: "/dashboard/add-system",
-      icon: <QuestionCircleOutlined className="text-xl" />,
-      label: "Add System",
-      roles: ["admin", "user"],
-    },
+
     {
       href: "/dashboard/create-quiz",
       icon: <QuestionCircleOutlined className="text-xl" />,

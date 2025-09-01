@@ -4,7 +4,8 @@ import { authApi } from "./authSlice"; // Assuming this is RTK Query slice, not 
 import { subjectApi } from "./subjectSlice";
 import { questionApi } from "./questionSlice";
 import { quizApi } from "./quizSlice";
-import {systemApi} from './systemSlice'
+import { systemApi } from "./systemSlice";
+import { subSystemApi } from "./subSystemSlice";
 
 export const store = configureStore({
   reducer: {
@@ -13,8 +14,8 @@ export const store = configureStore({
     [subjectApi.reducerPath]: subjectApi.reducer,
     [questionApi.reducerPath]: questionApi.reducer,
     [quizApi.reducerPath]: quizApi.reducer,
-    [systemApi.reducerPath]: systemApi.reducer
-
+    [systemApi.reducerPath]: systemApi.reducer,
+    [subSystemApi.reducerPath]: subSystemApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -24,4 +25,5 @@ export const store = configureStore({
       .concat(subjectApi.middleware)
       .concat(quizApi.middleware)
       .concat(systemApi.middleware)
+      .concat(subSystemApi.middleware),
 });

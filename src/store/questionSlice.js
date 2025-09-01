@@ -1,6 +1,5 @@
 "use client";
 
-import create from "@ant-design/icons/lib/components/IconFont";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
 
@@ -33,10 +32,10 @@ export const questionApi = createApi({
       invalidatesTags: ["Question"],
     }),
     editQuestion: builder.mutation({
-      query: (questionData) => ({
-        url: `questions/${questionData?._id}`,
+      query: ({ formData, id }) => ({
+        url: `questions/${id}`,
         method: "PUT",
-        body: questionData,
+        body: formData,
       }),
 
       invalidatesTags: ["Question"],

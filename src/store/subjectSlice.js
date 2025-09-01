@@ -64,6 +64,13 @@ export const subjectApi = createApi({
       }),
     }),
 
+    fetchSubSystemBySystemArray: builder.mutation({
+      query: (data) => ({
+        url: "countQuestions/by-systems-subsystem",
+        method: "POST",
+        body: data,
+      }),
+    }),
     createQuiz: builder.mutation({
       query: (data) => ({
         url: "quiz/create",
@@ -83,6 +90,7 @@ export const {
   useDeleteSubjectMutation,
   useAddSubjectBySubjectMutation,
   useFetchSystemBySubjectArrayMutation,
+  useFetchSubSystemBySystemArrayMutation,
   useCreateQuizMutation,
   // export other hooks as needed
 } = subjectApi;

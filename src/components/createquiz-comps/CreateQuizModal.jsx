@@ -78,6 +78,7 @@ const CreateQuizModal = ({ openModal, setModalOpen }) => {
             footer={null}
             onCancel={() => setModalOpen(false)}
             width={600}
+
         >
             <Form
                 form={form}
