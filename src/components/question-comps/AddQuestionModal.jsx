@@ -106,18 +106,23 @@ const AddQuestionModal = ({ openModal, setOpenModal, currentQuestion }) => {
       });
 
       // Set existing images
-      setExistingQuestionImages(questionImages || []);
+      // setExistingQuestionImages(questionImages || []);
+
+      setExistingQuestionImages(questionImages?.map(img => img.url) || []);
 
       // Extract answer images from answers
-      const ansImages = answers.map((a) => a.image).filter((img) => img);
-      setExistingAnswerImages(ansImages);
+      // const ansImages = answers.map((a) => a.image).filter((img) => img);
+      // setExistingAnswerImages(ansImages);
+
+      const ansImages = answers.map((a) => a.image?.url).filter(Boolean);
+setExistingAnswerImages(ansImages);
 
       // Initialize answerImages state for UI
       const initialAnswerImages = answers.map((ans, index) => ({
         uid: `answer-${index}`,
         name: `answer-image-${index}.png`,
         status: "done",
-        url: ans.image ? `${imageUrl}${ans.image}` : null,
+        url: ans.image?.url || null,
       }));
       setAnswerImages(initialAnswerImages);
 
@@ -381,13 +386,13 @@ const AddQuestionModal = ({ openModal, setOpenModal, currentQuestion }) => {
               style={{ position: "relative", width: "100px", height: "100px" }}
             >
               <Image
-                src={`${imageUrl}${image}`}
-                alt={`Existing ${type} ${index + 1}`}
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                preview={{
-                  mask: <EyeOutlined />,
-                }}
-              />
+  src={image}   // ✅ already a full Cloudinary URL
+  alt={`Existing ${type} ${index + 1}`}
+  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+  preview={{
+    mask: <EyeOutlined />,
+  }}
+/>
               <Button
                 type="primary"
                 danger
@@ -676,13 +681,13 @@ const AddQuestionModal = ({ openModal, setOpenModal, currentQuestion }) => {
                 }}
               >
                 <Image
-                  src={`${imageUrl}${currentQuestion.correctReasonImage}`}
-                  alt="Correct reason"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                  preview={{
-                    mask: <EyeOutlined />,
-                  }}
-                />
+  src={currentQuestion.correctReasonImage?.url}   // ✅ Cloudinary URL
+  alt="Correct reason"
+  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+  preview={{
+    mask: <EyeOutlined />,
+  }}
+/>
                 <Button
                   type="primary"
                   danger
