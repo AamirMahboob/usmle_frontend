@@ -441,7 +441,8 @@ const AddQuestionModal = ({ openModal, setOpenModal, currentQuestion }) => {
         setModifiedSubsystemArray([]);
       }}
       footer={null}
-      width={1200}
+      width={2000}
+      
       title={
         <span className="flex items-center gap-2">
           <QuestionCircleOutlined />
