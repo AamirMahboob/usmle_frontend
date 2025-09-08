@@ -120,7 +120,9 @@ export default function AdvanceQuiz() {
   const createQuizFun = async () => {
     try {
       const response = await createQuiz({
-        systems: [...selectedSystems, ...selectedSubsystems],
+        //  systems: [...selectedSystems, ...selectedSubsystems],
+        systems: selectedSystems,
+        subSystems: selectedSubsystems,
 
         durationMinutes: 15,
       }).unwrap();
@@ -239,7 +241,7 @@ export default function AdvanceQuiz() {
       )}
 
       {/* Subsystems Section */}
-      {subsystemList.length > 0 && (
+      
         <div className="mb-6">
           <h2 className="text-xl font-semibold">Step 3: Select Sub Systems</h2>
           <Divider />
@@ -265,12 +267,12 @@ export default function AdvanceQuiz() {
             type="primary"
             onClick={createQuizFun}
             loading={quizLoading}
-            disabled={selectedSubsystems.length === 0}
+            // disabled={selectedSubsystems.length === 0}
           >
             Create Quiz
           </Button>
         </div>
-      )}
+     
     </Spin>
   );
 }

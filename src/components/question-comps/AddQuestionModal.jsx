@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+ 
 import React, { useState, useEffect } from "react";
 import {
   Form,
@@ -43,9 +43,9 @@ const AddQuestionModal = ({ openModal, setOpenModal, currentQuestion }) => {
   const [previewTitle, setPreviewTitle] = useState("");
   const [existingQuestionImages, setExistingQuestionImages] = useState([]);
   const [existingAnswerImages, setExistingAnswerImages] = useState([]);
-  const [keepCorrectReasonImage, setKeepCorrectReasonImage] = useState(true);
+  const [existingCorrectReasonImages, setExistingCorrectReasonImages] =
+    useState([]);
   const [answerImages, setAnswerImages] = useState([]);
-  const imageUrl = "https://usmle-backend.vercel.app";
 
   // API hooks
   const { data: subjectRes, isLoading: isSubjectLoading } =
@@ -93,7 +93,6 @@ const AddQuestionModal = ({ openModal, setOpenModal, currentQuestion }) => {
         correctReasonImage,
       } = currentQuestion;
 
-      // Set form values
       form.setFieldsValue({
         questionId,
         subject: subject?._id,
@@ -105,29 +104,17 @@ const AddQuestionModal = ({ openModal, setOpenModal, currentQuestion }) => {
         correctReasonDetails,
       });
 
-      // Set existing images
-      // setExistingQuestionImages(questionImages || []);
-
-      setExistingQuestionImages(questionImages?.map(img => img.url) || []);
-
-      // Extract answer images from answers
-      // const ansImages = answers.map((a) => a.image).filter((img) => img);
-      // setExistingAnswerImages(ansImages);
-
-      const ansImages = answers.map((a) => a.image?.url).filter(Boolean);
-setExistingAnswerImages(ansImages);
-
-      // Initialize answerImages state for UI
-      const initialAnswerImages = answers.map((ans, index) => ({
-        uid: `answer-${index}`,
-        name: `answer-image-${index}.png`,
-        status: "done",
-        url: ans.image?.url || null,
-      }));
-      setAnswerImages(initialAnswerImages);
-
-      // Set correct reason image handling
-      setKeepCorrectReasonImage(!!correctReasonImage);
+      setExistingQuestionImages(questionImages || []);
+      setExistingAnswerImages(answers.map((a) => a.image).filter((img) => img));
+      setAnswerImages(
+        answers.map((ans, index) => ({
+          uid: `answer-${index}`,
+          name: `answer-image-${index}.png`,
+          status: "done",
+          url: ans.image ? `${ans.image.url}` : null,
+        }))
+      );
+      setExistingCorrectReasonImages(correctReasonImage || []);
 
       setSubjectId(subject?._id);
       setSystemId(system?._id);
@@ -140,17 +127,9 @@ setExistingAnswerImages(ansImages);
         }, [])
       );
 
-      // Load systems when editing
-      if (subject?._id) {
-        fetchSystems(subject._id);
-      }
-
-      // Load subsystems when editing
-      if (system?._id) {
-        fetchSubsystems(system._id);
-      }
+      if (subject?._id) fetchSystems(subject._id);
+      if (system?._id) fetchSubsystems(system._id);
     } else {
-      // Reset everything for new question
       form.resetFields();
       setQuestionType("MCQ");
       setCorrectAnswers([]);
@@ -160,7 +139,7 @@ setExistingAnswerImages(ansImages);
       setExistingQuestionImages([]);
       setExistingAnswerImages([]);
       setAnswerImages([]);
-      setKeepCorrectReasonImage(true);
+      setExistingCorrectReasonImages([]);
       setModifiedSystemArray([]);
       setModifiedSubsystemArray([]);
     }
@@ -221,11 +200,9 @@ setExistingAnswerImages(ansImages);
         toast.error(response?.message || "Failed to add question");
       }
     } catch (error) {
-      if (error.data?.success === false) {
-        toast.error(error.data.message || "Something went wrong");
-      } else {
-        toast.error(error.message || "Something went wrong");
-      }
+      toast.error(
+        error.data?.message || error.message || "Something went wrong"
+      );
     }
   };
 
@@ -239,11 +216,9 @@ setExistingAnswerImages(ansImages);
         toast.error(response?.message || "Failed to update question");
       }
     } catch (error) {
-      if (error.data?.success === false) {
-        toast.error(error.data.message || "Something went wrong");
-      } else {
-        toast.error(error.message || "Something went wrong");
-      }
+      toast.error(
+        error.data?.message || error.message || "Something went wrong"
+      );
     }
   };
 
@@ -274,7 +249,6 @@ setExistingAnswerImages(ansImages);
     );
     formData.append("correctReasonDetails", values.correctReasonDetails);
 
-    // Add information about existing images
     formData.append(
       "existingQuestionImages",
       JSON.stringify(existingQuestionImages)
@@ -284,11 +258,10 @@ setExistingAnswerImages(ansImages);
       JSON.stringify(existingAnswerImages)
     );
     formData.append(
-      "keepCorrectReasonImage",
-      keepCorrectReasonImage.toString()
+      "existingCorrectReasonImages",
+      JSON.stringify(existingCorrectReasonImages)
     );
 
-    // File uploads
     ["questionImages", "answerImages", "correctReasonImage"].forEach((key) => {
       if (values[key]) {
         values[key].forEach((file) => {
@@ -337,8 +310,7 @@ setExistingAnswerImages(ansImages);
     });
   };
 
-  // Function to handle image removal
-  const handleRemoveImage = (type, index, imageUrl) => {
+  const handleRemoveImage = (type, index) => {
     if (type === "question") {
       const newImages = [...existingQuestionImages];
       newImages.splice(index, 1);
@@ -347,16 +319,13 @@ setExistingAnswerImages(ansImages);
       const newImages = [...existingAnswerImages];
       newImages.splice(index, 1);
       setExistingAnswerImages(newImages);
-
-      // Also update the answerImages state for UI
       const newAnswerImages = [...answerImages];
-      newAnswerImages[index] = {
-        ...newAnswerImages[index],
-        url: null,
-      };
+      newAnswerImages[index] = { ...newAnswerImages[index], url: null };
       setAnswerImages(newAnswerImages);
     } else if (type === "correctReason") {
-      setKeepCorrectReasonImage(false);
+      const newImages = [...existingCorrectReasonImages];
+      newImages.splice(index, 1);
+      setExistingCorrectReasonImages(newImages);
     }
   };
 
@@ -367,11 +336,11 @@ setExistingAnswerImages(ansImages);
     </div>
   );
 
-  // Custom upload component that shows existing images and allows removal
-  const renderUploadWithExisting = (type, existingImages, multiple = true) => {
+  const renderUploadWithExisting = (type, existingImages = [], multiple = true) => {
+    const safeImages = Array.isArray(existingImages) ? existingImages : [];
+  
     return (
       <div>
-        {/* Show existing images with remove option */}
         <div
           style={{
             display: "flex",
@@ -380,32 +349,29 @@ setExistingAnswerImages(ansImages);
             marginBottom: "16px",
           }}
         >
-          {existingImages.map((image, index) => (
+          {safeImages.map((image, index) => (
             <div
               key={index}
               style={{ position: "relative", width: "100px", height: "100px" }}
             >
               <Image
-  src={image}   // ✅ already a full Cloudinary URL
-  alt={`Existing ${type} ${index + 1}`}
-  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-  preview={{
-    mask: <EyeOutlined />,
-  }}
-/>
+                src={image?.url || image} // handle both object and string
+                alt={`Existing ${type} ${index + 1}`}
+                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                preview={{ mask: <EyeOutlined /> }}
+              />
               <Button
                 type="primary"
                 danger
                 size="small"
                 icon={<DeleteOutlined />}
                 style={{ position: "absolute", top: 0, right: 0 }}
-                onClick={() => handleRemoveImage(type, index, image)}
+                onClick={() => handleRemoveImage(type, index)}
               />
             </div>
           ))}
         </div>
-
-        {/* Upload component for new images */}
+  
         <Form.Item
           name={
             type === "question"
@@ -415,12 +381,7 @@ setExistingAnswerImages(ansImages);
               : "correctReasonImage"
           }
           valuePropName="fileList"
-          getValueFromEvent={(e) => {
-            if (Array.isArray(e)) {
-              return e;
-            }
-            return e && e.fileList;
-          }}
+          getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
           noStyle
         >
           <Upload
@@ -435,6 +396,7 @@ setExistingAnswerImages(ansImages);
       </div>
     );
   };
+  
 
   return (
     <Modal
@@ -446,8 +408,7 @@ setExistingAnswerImages(ansImages);
         setModifiedSubsystemArray([]);
       }}
       footer={null}
-      width={2000}
-      
+      width={1200}
       title={
         <span className="flex items-center gap-2">
           <QuestionCircleOutlined />
@@ -664,60 +625,13 @@ setExistingAnswerImages(ansImages);
             {renderUploadWithExisting("question", existingQuestionImages, true)}
           </Form.Item>
 
-          {/* Answer Images */}
-          {/* <Form.Item label="Answer Images">
-            {renderUploadWithExisting("answer", existingAnswerImages, true)}
-          </Form.Item> */}
-
-          {/* Correct Reason Image */}
-          <Form.Item label="Correct Reason Image">
-            {keepCorrectReasonImage && currentQuestion?.correctReasonImage ? (
-              <div
-                style={{
-                  position: "relative",
-                  width: "100px",
-                  height: "100px",
-                  marginBottom: "16px",
-                }}
-              >
-                <Image
-  src={currentQuestion.correctReasonImage?.url}   // ✅ Cloudinary URL
-  alt="Correct reason"
-  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-  preview={{
-    mask: <EyeOutlined />,
-  }}
-/>
-                <Button
-                  type="primary"
-                  danger
-                  size="small"
-                  icon={<DeleteOutlined />}
-                  style={{ position: "absolute", top: 0, right: 0 }}
-                  onClick={() => setKeepCorrectReasonImage(false)}
-                />
-              </div>
-            ) : null}
-            <Form.Item
-              name="correctReasonImage"
-              valuePropName="fileList"
-              getValueFromEvent={(e) => {
-                if (Array.isArray(e)) {
-                  return e;
-                }
-                return e && e.fileList;
-              }}
-              noStyle
-            >
-              <Upload
-                listType="picture-card"
-                beforeUpload={() => false}
-                multiple={false}
-                onPreview={handlePreview}
-              >
-                {uploadButton}
-              </Upload>
-            </Form.Item>
+          {/* Correct Reason Images */}
+          <Form.Item label="Correct Reason Images">
+            {renderUploadWithExisting(
+              "correctReason",
+              existingCorrectReasonImages,
+              true
+            )}
           </Form.Item>
 
           {/* Preview Modal */}
@@ -730,26 +644,16 @@ setExistingAnswerImages(ansImages);
             <img alt="Preview" style={{ width: "100%" }} src={previewImage} />
           </Modal>
 
-          {/* Actions */}
+          {/* Submit */}
           <Form.Item>
-            <div className="flex justify-end gap-2">
-              <Button
-                onClick={() => {
-                  setOpenModal(false);
-                  setModifiedSystemArray([]);
-                  setModifiedSubsystemArray([]);
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                type="primary"
-                htmlType="submit"
-                loading={isAddQuestionLoading || isEditQuestionLoading}
-              >
-                {currentQuestion ? "Update" : "Create"}
-              </Button>
-            </div>
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isAddQuestionLoading || isEditQuestionLoading}
+              block
+            >
+              {currentQuestion ? "Update Question" : "Add Question"}
+            </Button>
           </Form.Item>
         </Form>
       </Spin>
